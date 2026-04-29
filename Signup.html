@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Sign Up</title>
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900">
+    <div class="p-30 place-items-center">
+      <form class="bg-white w-80 grid justify-center rounded-lg p-10">
+        <label class="text-lg" for="name">Nombre</label>
+        <input type="text" name="Name" id="Name" required />
+        <br />
+        <label class="text-lg" for="username">Nombre de usuario</label>
+        <input type="text" name="username" id="username" required />
+        <br />
+        <label class="text-lg" for="date">Fecha de nacimiento</label>
+        <input type="date" name="date" id="date" required />
+        <br />
+        <label class="text-lg" for="email">Email</label>
+        <input type="email" placeholder="tu@ejemplo.com" name="email" id="email" required/>
+        <br />
+        <label class="text-lg" for="password">Contraseña</label>
+        <input type="password" name="password" id="password" required />
+        <br />
+        <button class="bg-green-600 cursor-pointer rounded-lg " type="submit">Listo</button>
+      </form>
+    </div>
+  </body>
+</html>
