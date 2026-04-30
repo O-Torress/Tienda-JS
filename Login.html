@@ -4,15 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <title>Sign Up</title>
+    <title>Log in</title>
   </head>
-  <body class="bg-gray-50 dark:bg-gray-900 ">
+  <body class="bg-gray-50 dark:bg-gray-900">
     
     <div class="p-10 place-items-center ">
-      <h1  class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-7">TiendaLLM</h1>
+       
+      <div class="flex items-center justify-center">
+        <h1  class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-7">Pointer</h1>
+        <img src="pointer-svgrepo-com.svg" alt="Pointer svg" width="50" height="50">
+      </div>
       
-      <form class="w-80 grid justify-left dark:bg-gray-800 rounded-3xl p-8 text-white">
-        
+      <form class="w-80 grid dark:bg-gray-800 rounded-3xl p-8 text-white shadow-xl/30">
         <label class="text-base mb-1" for="email">Correo</label>
         <input class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-solid border-indigo-500/50 hover:border-indigo-800/50 px-2 py-2" type="email" placeholder="tucorreo@ejemplo.com" name="email" id="email" required/>
         <br />
@@ -27,7 +30,31 @@
         </div>
       
       </form>
-    
     </div>
+    <script>
+      const currentUser = localStorage.getItem('currentUser');
+      if (currentUser) {
+        window.location.href = 'pointer.html';
+      }
+      const form = document.querySelector('form');
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        
+        const user = users.find((user) => user.email === email);
+        if (user && user.password === password) {
+       
+          const { password, ...userWithoutPassword } = user;
+          localStorage.setItem('currentUser', JSON.stringify(userWithoutPassword));
+        
+          window.location.href = 'Pointer.html';
+        } else {
+          alert('Email o password incerrecta. Intente de nuevo.');
+        }
+      });
+    </script>
   </body>
 </html>

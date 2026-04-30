@@ -8,35 +8,101 @@
   </head>
   <body class="bg-gray-50 dark:bg-gray-900 ">
     
-    <div class="p-10 place-items-center ">
-      <h1  class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-7">TiendaLLM</h1>
-      
-      <form class="w-80 grid justify-left dark:bg-gray-800 rounded-3xl p-8 text-white">
-        
+    <div class="p-10 place-items-center">
+      <div class="flex items-center justify-center">
+        <h1  class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-7">Pointer</h1>
+        <img src="pointer-svgrepo-com.svg" alt="Pointer svg" width="50" height="50">
+      </div>
+
+      <form class="w-80 grid dark:bg-gray-800 rounded-3xl p-8 text-white shadow-xl/30">  
         <label class="text-base mb-1" for="name">Nombre</label>
-        <input class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-solid border-indigo-500/50 hover:border-indigo-800/50 px-2 py-2" type="text" name="Name" id="Name" required />
+        <input class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-solid border-indigo-500/50 hover:border-indigo-800/50 px-2 py-2" 
+        type="text" name="Name" id="name" required />
         <br />
         <label class="text-base mb-1" for="username">Nombre de usuario</label>
-        <input class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-solid border-indigo-500/50 hover:border-indigo-800/50 px-2 py-2" type="text" name="username" id="username" required />
-        <br />
-        <label class="text-base mb-1" for="date">Fecha de nacimiento</label>
-        <input class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-solid border-indigo-500/50 hover:border-indigo-800/50 px-2 py-2" type="date" name="date" id="date" required />
+        <input class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-solid border-indigo-500/50 hover:border-indigo-800/50 px-2 py-2" 
+        type="text" name="username" id="username" required />
         <br />
         <label class="text-base mb-1" for="email">Correo</label>
-        <input class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-solid border-indigo-500/50 hover:border-indigo-800/50 px-2 py-2" type="email" placeholder="tucorreo@ejemplo.com" name="email" id="email" required/>
+        <input class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-solid border-indigo-500/50 hover:border-indigo-800/50 px-2 py-2" 
+        type="email" placeholder="tucorreo@ejemplo.com" name="email" id="email" required/>
         <br />
         <label class="text-base mb-1" for="password">Contraseña</label>
-        <input class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-solid border-indigo-500/50 hover:border-indigo-800/50 px-2 py-2" type="password" name="password" id="password" required />
+        <input class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-solid border-indigo-500/50 hover:border-indigo-800/50 px-2 py-2" 
+        type="password" name="password" id="password" required />
         <br />
-        <button class="bg-green-600 cursor-pointer rounded-lg font-semibold text-white py-2 hover:bg-green-700" type="submit">Listo</button> 
+        <label class="text-base mb-1" for="confirmPassword">Confirme contraseña</label>
+        <input class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-solid border-indigo-500/50 hover:border-indigo-800/50 px-2 py-2" 
+        type="password" name="confirmPassword" id="confirmPassword" required />
+        <br />
+        <button class="bg-green-600 cursor-pointer rounded-lg font-semibold text-white py-2 hover:bg-green-700" 
+        type="submit">Listo</button> 
         <div class="mt-4">
         <p class="text-center text-sm text-gray-600 dark:text-gray-300">¿Ya tienes una cuenta? 
         <a href="Login.html" class="font-semibold text-green-600 hover:text-green-700 dark:text-green-400">Logeate</a>
         </p>
-        </div>
-      
+        </div> 
       </form>
-    
     </div>
+    <script>
+    
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      window.location.href = 'pointer.html';
+    }
+    
+    const form = document.querySelector('form');
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+      const username = document.getElementById('username').value;
+      const email =  document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      let regexName = /^[a-zA-Z\sñÑáéíóúÁÉÍÓÚ]+$/;
+      let regexUsername = /^[a-zA-Z0-9]+$/;
+      let regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      let regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()-+.]).{8,}$/;
+      let errors = [];
+      
+      if (!regexName.test(name)) {
+          errors.push('El nombre solo debe de contener letras.');
+        }
+        if (!regexUsername.test(username)) {
+          errors.push('El username solo debe de contener letras y números.');
+        }
+        if (!regexEmail.test(email)) {
+          errors.push('Please enter a valid email address.');
+        }
+        if (!regexPassword.test(password)) {
+          errors.push('La contraseña debe contener al menos 8 caracteres, incluyendo una letra minúscula, una letra mayúscula, un número y un carácter especial.');
+        }
+        if (password !== confirmPassword) {
+          errors.push('La contraseña no coniside.');
+        }
+
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        if (users.some (user => user.username === username)) {
+          errors.push(`El username ${username} ya existe, ingrese uno diferente.`);
+        }
+
+        if (users.some (user => user.email=== email)) {
+          errors.push(`El correo ${user.email} ya existe, ingrese uno diferente.`);
+        }
+
+        if (errors.length > 0) {
+          alert(errors.join('\n'));
+          return;
+        }
+        // Crear un nuevo usuario y almacenarlo en localStorage
+        const newUser = { name, username, email, password, role: 'user' };
+        users.push(newUser);
+        localStorage.setItem('users', JSON.stringify(users));
+        //mostrar mensaje de éxito y redirigir a la página de inicio
+        alert('Registro exitoso! Redireccionando a Pointer.');
+        window.location.href = 'pointer.html';
+    });
+   </script>
   </body>
 </html>
