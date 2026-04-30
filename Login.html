@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Sign Up</title>
+  </head>
+  <body class="bg-gray-50 dark:bg-gray-900 ">
+    
+    <div class="p-10 place-items-center ">
+      <h1  class="text-3xl font-bold text-gray-900 dark:text-white text-center mb-7">TiendaLLM</h1>
+      
+      <form class="w-80 grid justify-left dark:bg-gray-800 rounded-3xl p-8 text-white">
+        
+        <label class="text-base mb-1" for="email">Correo</label>
+        <input class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-solid border-indigo-500/50 hover:border-indigo-800/50 px-2 py-2" type="email" placeholder="tucorreo@ejemplo.com" name="email" id="email" required/>
+        <br />
+        <label class="text-base mb-1" for="password">Contraseña</label>
+        <input class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-solid border-indigo-500/50 hover:border-indigo-800/50 px-2 py-2" type="password" name="password" id="password" required />
+        <br />
+        <button class="bg-green-600 cursor-pointer rounded-lg font-semibold text-white py-2 hover:bg-green-700" type="submit">Listo</button> 
+        <div class="mt-4">
+        <p class="text-center text-sm text-gray-600 dark:text-gray-300">¿No tienes una cuenta? 
+        <a href="Signup.html" class="font-semibold text-green-600 hover:text-green-700 dark:text-green-400">Registrate</a>
+        </p>
+        </div>
+      
+      </form>
+    
+    </div>
+  </body>
+</html>
