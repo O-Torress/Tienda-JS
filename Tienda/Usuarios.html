@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <title>Document</title>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 ">
+  <div class="p-10 place-items-center ">
+       
+      <div class="flex items-center justify-center mb-2">
+        <h1 id="nombreUsuario" class="text-3xl font-bold text-gray-900 dark:text-white text-center"></h1>
+      </div>
+      
+      <form class="w-80 grid dark:bg-gray-800 rounded-3xl p-8 text-white shadow-xl/30">
+        <label class="text-base mb-1" for="email">Nuevo nombre de usuario</label>
+        <input class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-solid border-indigo-500/50 hover:border-indigo-800/50 px-2 py-2" 
+        type="text" name="name" id="name" required/>
+        <br />
+        <label class="text-base mb-1" for="email">Nuevo correo</label>
+        <input class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-solid border-indigo-500/50 hover:border-indigo-800/50 px-2 py-2" 
+        type="email" placeholder="tucorreo@ejemplo.com" name="email" id="email" required/>
+        <br />
+        <label class="text-base mb-1" for="password">Contraseña nueva</label>
+        <input class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-solid border-indigo-500/50 hover:border-indigo-800/50 px-2 py-2" 
+        type="password" name="password" id="password" required />
+        <br />
+        <label class="text-base mb-1" for="password">Confirme contraseña nueva</label>
+        <input class="bg-gray-50 dark:bg-gray-900 rounded-xl border border-solid border-indigo-500/50 hover:border-indigo-800/50 px-2 py-2" 
+        type="password" name="password" id="confirmPassword" required />
+        <br />
+        <button class="bg-green-600 cursor-pointer rounded-lg font-semibold text-white py-2 hover:bg-green-700" type="submit">Listo</button> 
+        <div class="mt-4">
+        <p class="text-center text-sm text-gray-600 dark:text-gray-300">¿Quieres volver a 
+        <a href="Catalogo.html" class="font-semibold text-green-600 hover:text-green-700 dark:text-green-400">Pointer?</a>
+        </p>
+      </form>
+    </div>
+    <script>
+      const userData = localStorage.getItem('currentUser');
+      
+      if (userData) {
+        const user = JSON.parse(userData);
+        
+        const greeting = document.getElementById('nombreUsuario');
+        greeting.textContent = `Hola ${user.name}`;
+      } else {
+        window.location.href = 'Login.html';
+      }
+
+      const form = document.querySelector('form');
+      form.addEventListener('submit', (event) => {
+        
+        const newUserName = document.getElementById('name').value;
+        const newEmail = document.getElementById('email').value;
+        const newPassword = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+      let regexUsername = /^[a-zA-Z0-9]+$/;
+      let regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      let regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()-+.]).{8,}$/;
+      let errors = [];
+
+      if (!regexUsername.test(newUserName)) {
+          errors.push('El username solo debe de contener letras y números.');
+        }
+        if (!regexEmail.test(newEmail)) {
+          errors.push('Please enter a valid email address.');
+        }
+        if (!regexPassword.test(newPassword)) {
+          errors.push('La contraseña debe contener al menos 8 caracteres, incluyendo una letra minúscula, una letra mayúscula, un número y un carácter especial.');
+        }
+        if (newPassword !== confirmPassword) {
+          errors.push('La contraseña no coincide.');
+        }
+
+        if (errors.length > 0) {
+          alert(errors.join('\n'));
+          return;
+        }
+
+        const currentUser = JSON.parse(userData);
+        currentUser.username = newUserName;
+        currentUser.email = newEmail;
+        currentUser.password = newPassword;
+
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+      });
+    </script>
+</body>
+</html>
