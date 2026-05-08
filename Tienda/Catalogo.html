@@ -7,21 +7,86 @@
   <title>Pointer</title>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900">
- 
+ <header>
   <nav class="flex dark:bg-gray-800 py-3 rounded-lg">
       <div class="flex items-center justify-start ml-5 mt-1 w-full">
         <h1  class="text-2xl font-bold text-gray-900 dark:text-white text-center">Pointer</h1>
         <img src="../Svg/pointer.svg" alt="Pointer svg" width="40" height="40">
       </div>
-    <div class="justify-items-end mr-5 mt-2">
-      <a href="Usuarios.html" class="bg-green-600 cursor-pointer rounded-lg font-semibold text-white py-2 px-2 hover:bg-green-700">Usuario</a>
+    <div class="mr-5 mt-2">
+      <ul>
+        
+        <li class="relative active:scale-105 transition-transform 
+        bg-green-600 cursor-pointer rounded-lg font-semibold 
+        text-white py-2 px-2 w-25 group/dropdown">
+          
+          <label class="cursor-pointer w-full flex justify-center items-center gap-2 py-1">
+            <span 
+            id="Btnusuario" >
+          </span>
+          <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
+          fill="#ffffff" viewBox="0 0 24 24" class="group-has-checked/dropdown:rotate-90 transition-transform" >
+          <!--Boxicons v3.0.8 https://boxicons.com | License  https://docs.boxicons.com/free-->
+          <path d="m9.71 17.71 5.7-5.71-5.7-5.71-1.42 1.42 4.3 4.29-4.3 4.29z"></path>
+          </svg>
+          <input type="checkbox" class="hidden">
+          </label> 
+          
+          <ul class="absolute top-[calc(100%+20px)] w-40 
+          right-0 bg-green-600 rounded-2xl p-3 opacity-0 
+          pointer-events-none
+          
+          group-has-checked/dropdown:opacity-100 
+          group-has-checked/dropdown:pointer-events-auto
+          transition-opacity
+          ">
+
+            <li class="flex gap-2 hover:bg-green-900/80 p-2 rounded-xl">
+              <img src="../Svg/User.svg" alt="">
+              <a href="Usuarios.html" class="text-white">Perfil</a>
+            </li>
+            <li class="flex gap-2 hover:bg-green-900/80 p-2 rounded-xl">
+              <img src="../Svg/Admin.svg" alt="">
+              <a href="Admin.html" class="text-white">Admin</a>
+            </li>
+            <li class="flex gap-2 hover:bg-red-900 p-2 rounded-xl">
+              <img src="../Svg/Logout.svg" alt="">
+              <a id="salir" href="Login.html" class="text-white">Salir</a>
+            </li>
+
+          </ul>
+        
+        </li>
+      
+      </ul>
     </div>
   </nav>
+ </header>
   <section>
-    <h1 class="text-3xl font-bold text-white mt-4 ml-5">Catalogo</h1>
-    <div class="bg-white rounded-xl mt-10" id="producto1">
-      <h2 class="ml-5">Producto</h2>
+    <h1 class="text-3xl font-bold mt-4 ml-5 text-green-600">Catálogo</h1>
+  </section>
+
+  <section class="grid grid-cols-1 md:grid-cols-3 pt-5 gap-7 ml-3 mr-3">
+    <div class="bg-[#BFC6C4] rounded-xl px-30 py-40">
+      <a href="Producto.html" id="producto1"></a>
+    </div>
+    <div class="bg-[#BFC6C4] rounded-xl px-30 py-40">
+      <a href="Producto.html" id="producto2"></a>
+    </div>
+    <div class="bg-[#BFC6C4] rounded-xl px-30 py-40">
+      <a href="Producto.html" id="producto3 "></a>
     </div>
   </section>
+  <script>
+    const userData = localStorage.getItem('currentUser');
+
+      if (userData) {
+        const user = JSON.parse(userData);
+        
+        const greeting = document.getElementById('Btnusuario');
+        greeting.textContent = `${user.name}`;
+      }
+    
+  </script>
 </body>
 </html>

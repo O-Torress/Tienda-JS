@@ -51,16 +51,17 @@
 
       const form = document.querySelector('form');
       form.addEventListener('submit', (event) => {
-        
+        event.preventDefault();
+
         const newUserName = document.getElementById('name').value;
         const newEmail = document.getElementById('email').value;
         const newPassword = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
 
-      let regexUsername = /^[a-zA-Z0-9]+$/;
-      let regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      let regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()-+.]).{8,}$/;
-      let errors = [];
+        let regexUsername = /^[a-zA-Z0-9]+$/;
+        let regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        let regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()-+.]).{8,}$/;
+        let errors = [];
 
       if (!regexUsername.test(newUserName)) {
           errors.push('El username solo debe de contener letras y números.');
@@ -81,11 +82,29 @@
         }
 
         const currentUser = JSON.parse(userData);
+        const originalEmail = currentUser.email;
+
         currentUser.username = newUserName;
         currentUser.email = newEmail;
         currentUser.password = newPassword;
 
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+        const updatedUsers = users.map((user) => {
+          if (user.email === originalEmail) {
+            return {
+              ...user,
+              username: newUserName,
+              email: newEmail,
+              password: newPassword,
+            };
+          }
+          return user;
+        });
+
         localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        localStorage.setItem('users', JSON.stringify(updatedUsers));
+
+        alert('Datos actualizados correctamente.');
 
       });
     </script>
