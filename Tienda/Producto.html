@@ -7,9 +7,120 @@
   <title>Document</title>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900">
-  
-</body>
+   <header>
+  <nav class="flex dark:bg-gray-800 py-3 rounded-lg">
+      <div class="flex items-center justify-start ml-5 mt-1 w-full">
+        <h1  class="text-2xl font-bold text-gray-900 dark:text-white text-center">Pointer</h1>
+        <img src="../Svg/pointer.svg" alt="Pointer svg" width="40" height="40">
+      </div>
+    <div class="mr-5 mt-2">
+      <ul>
+        
+        <li class="relative active:scale-105 transition-transform 
+        bg-green-600 cursor-pointer rounded-lg font-semibold 
+        text-white py-2 px-2 w-25 group/dropdown">
+          
+          <label class="cursor-pointer w-full flex justify-center items-center gap-2 py-1">
+            <span 
+            id="Btnusuario" >
+          </span>
+          <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
+          fill="#ffffff" viewBox="0 0 24 24" class="group-has-checked/dropdown:rotate-90 transition-transform" >
+          <!--Boxicons v3.0.8 https://boxicons.com | License  https://docs.boxicons.com/free-->
+          <path d="m9.71 17.71 5.7-5.71-5.7-5.71-1.42 1.42 4.3 4.29-4.3 4.29z"></path>
+          </svg>
+          <input type="checkbox" class="hidden">
+          </label> 
+          
+          <ul class="absolute top-[calc(100%+20px)] w-40 
+          right-0 bg-green-600 rounded-2xl p-3 opacity-0 
+          pointer-events-none
+          
+          group-has-checked/dropdown:opacity-100 
+          group-has-checked/dropdown:pointer-events-auto
+          transition-opacity
+          ">
+            <a href="Usuarios.html">
+              <li class="flex gap-2 hover:bg-green-900/80 p-2 rounded-xl">
+              <img src="../Svg/User.svg" alt="">
+              <span  class="text-white">Perfil</span>
+            </li>
+            </a>
+           
+            <a href="Admin.html">
+              <li class="flex gap-2 hover:bg-green-900/80 p-2 rounded-xl">
+              <img src="../Svg/Admin.svg" alt="">
+              <span class="text-white">Admin</span>
+            </li>
+            </a>
+            
+            <a href="Login.html">
+              <li class="flex gap-2 hover:bg-red-900 p-2 rounded-xl">
+              <img src="../Svg/Logout.svg" alt="">
+              <span id="salir" class="text-white">Salir</span>
+            </li>
+            </a>
+            
+
+          </ul>
+        
+        </li>
+      
+      </ul>
+    </div>
+  </nav>
+ </header>
+
+ <section class="p-5">
+  <div id="productoDetalle" class="max-w-4xl mx-auto bg-gray-800 rounded-xl p-8 text-white">
+    
+  </div>
+</section>
+
 <script>
   
+  const urlParams = new URLSearchParams(window.location.search);
+  const productoId = parseInt(urlParams.get('id'));
+
+  
+  const productos = JSON.parse(localStorage.getItem('productos')) || [];
+
+  
+  const producto = productos.find(p => p.id === productoId);
+
+  if (producto) {
+    document.getElementById('productoDetalle').innerHTML = `
+      <div class="flex flex-col lg:flex-row gap-8">
+        <div class="lg:w-1/2">
+          <img src="${producto.imagen}" alt="${producto.nombre}" class="w-full h-96 object-cover rounded-lg">
+        </div>
+        <div class="lg:w-1/2">
+          <h1 class="text-4xl font-bold mb-4">${producto.nombre}</h1>
+          <p class="text-xl text-green-400 font-bold mb-4">$${producto.precio}</p>
+          <p class="text-gray-300 mb-6">${producto.descripcion}</p>
+          <button class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg text-white font-bold">
+            Comprar
+          </button>
+        </div>
+      </div>
+    `;
+  } else {
+    document.getElementById('productoDetalle').innerHTML = `
+      <p class="text-center text-xl">Producto no encontrado.</p>
+    `;
+  }
+
+  const userData = localStorage.getItem('currentUser');
+  if (userData) {
+    const user = JSON.parse(userData);
+    const greeting = document.getElementById('Btnusuario');
+    greeting.textContent = `${user.name}`;
+  }
+
+  const logoutLink = document.getElementById('salir');
+  if (logoutLink) {
+    logoutLink.addEventListener('click', () => {
+      localStorage.removeItem('currentUser');
+    });
+  }
 </script>
-</html>

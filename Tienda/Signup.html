@@ -63,7 +63,7 @@
       let regexName = /^[a-zA-Z\sñÑáéíóúÁÉÍÓÚ]+$/;
       let regexUsername = /^[a-zA-Z0-9]+$/;
       let regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      let regexPassword = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()-+.]).{8,}$/;
+      let regexPassword = /(?=.*[a-z])(?=^(?=.*\d).*[A-Z])(?=.*[!@#$%^&*()-+.]).{8,}$/;
       let errors = [];
       
       if (!regexName.test(name)) {
