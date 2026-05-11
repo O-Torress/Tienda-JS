@@ -32,10 +32,13 @@
       </form>
     </div>
     <script>
+      setTimeout(()=>{
       const currentUser = localStorage.getItem('currentUser');
       if (currentUser) {
         window.location.href = 'Catalogo.html';
       }
+    },2000);
+      
       const form = document.querySelector('form');
       form.addEventListener('submit', (event) => {
         event.preventDefault();

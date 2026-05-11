@@ -4,9 +4,317 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <title>Document</title>
+  <title>Admin</title>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900">
-  
+   <header>
+  <nav class="flex dark:bg-gray-800 py-3 rounded-lg">
+      <div class="flex items-center justify-start ml-5 mt-1 w-full">
+        <h1  class="text-2xl font-bold text-gray-900 dark:text-white text-center">Pointer</h1>
+        <img src="../Svg/pointer.svg" alt="Pointer svg" width="40" height="40">
+      </div>
+
+    <div class="mr-5 mt-2">
+      <ul>
+        
+        <li class="relative active:scale-105 transition-transform 
+        bg-green-600 cursor-pointer rounded-lg font-semibold 
+        text-white py-2 px-2 w-25 group/dropdown">
+          
+          <label class="cursor-pointer w-full flex justify-center items-center gap-2 py-1">
+            <span 
+            id="Btnusuario" >
+          </span>
+          <svg  xmlns="http://www.w3.org/2000/svg" width="24" height="24"  
+          fill="#ffffff" viewBox="0 0 24 24" class="group-has-checked/dropdown:rotate-90 transition-transform" >
+          
+          <path d="m9.71 17.71 5.7-5.71-5.7-5.71-1.42 1.42 4.3 4.29-4.3 4.29z"></path>
+          </svg>
+          <input type="checkbox" class="hidden">
+          </label> 
+          
+          <ul class="absolute top-[calc(100%+20px)] w-40 
+          right-0 bg-green-600 rounded-2xl p-3 opacity-0 
+          pointer-events-none
+          
+          group-has-checked/dropdown:opacity-100 
+          group-has-checked/dropdown:pointer-events-auto
+          transition-opacity
+          ">
+            <a href="Catalogo.html">
+            <li class="flex gap-2 hover:bg-red-900 p-2 rounded-xl">
+              <img src="../Svg/Logout.svg" alt="">
+              <span id="salir" class="text-white">Salir</span>
+            </li>
+            </a>
+            
+          </ul>
+        
+        </li>
+      
+      </ul>
+    </div>
+  </nav>
+ </header>
+ <section class="p-5">
+
+  <h1 class="text-3xl font-bold text-green-600 mb-5">
+    Panel de Administración
+  </h1>
+
+  <!-- FORMULARIO -->
+
+  <form id="productForm" class="bg-gray-800 p-5 rounded-xl space-y-4">
+
+    <input
+      type="text"
+      id="nombre"
+      placeholder="Nombre del producto"
+      class="w-full p-3 rounded-lg bg-gray-700 text-white"
+      required
+    >
+
+    <input
+      type="number"
+      id="precio"
+      placeholder="Precio"
+      class="w-full p-3 rounded-lg bg-gray-700 text-white"
+      required
+    >
+
+    <textarea
+      id="descripcion"
+      placeholder="Descripción"
+      class="w-full p-3 rounded-lg bg-gray-700 text-white"
+      required
+    ></textarea>
+
+    <input
+      type="text"
+      id="imagen"
+      placeholder="URL de imagen"
+      class="w-full p-3 rounded-lg bg-gray-700 text-white"
+      required
+    >
+
+    <button
+      type="submit"
+      class="bg-green-600 hover:bg-green-700 px-5 py-3 rounded-lg text-white font-bold cursor-pointer"
+    >
+      Guardar Producto
+    </button>
+
+  </form>
+
+  <!-- PRODUCTOS -->
+
+  <div
+    id="adminProductos"
+    class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-10"
+  ></div>
+
+</section>
+ <script>
+    const userData = localStorage.getItem('currentUser');
+
+      if (userData) {
+        const user = JSON.parse(userData);
+
+        const greeting = document.getElementById('Btnusuario');
+        greeting.textContent = `${user.name}`;
+
+        function isAdmin(user) {
+          return user.role === 'admin';
+        }
+
+        if (!isAdmin(user)) {
+          alert('Acceso denegado. Solo administradores pueden acceder a esta página.');
+          window.location.href = 'Catalogo.html';
+        }
+      }
+    // =========================
+  // VARIABLES
+  // =========================
+
+  const form = document.getElementById('productForm');
+
+  const adminProductos = document.getElementById('adminProductos');
+
+  let productos = JSON.parse(localStorage.getItem('productos')) || [];
+
+  let editando = false;
+
+  let productoEditandoId = null;
+
+  // =========================
+  // RENDER
+  // =========================
+
+  function renderProductos() {
+
+    adminProductos.innerHTML = '';
+
+    productos.forEach(producto => {
+
+      adminProductos.innerHTML += `
+
+        <div class="bg-gray-800 p-5 rounded-xl text-white">
+
+          <img
+            src="${producto.imagen}"
+            class="w-full h-52 object-cover rounded-lg"
+          >
+
+          <h2 class="text-2xl font-bold mt-3">
+            ${producto.nombre}
+          </h2>
+
+          <p class="mt-2">
+            ${producto.descripcion}
+          </p>
+
+          <p class="text-green-400 font-bold mt-3">
+            $${producto.precio}
+          </p>
+
+          <div class="flex gap-3 mt-5">
+
+            <button
+              onclick="editarProducto(${producto.id})"
+              class="bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded-lg"
+            >
+              Editar
+            </button>
+
+            <button
+              onclick="eliminarProducto(${producto.id})"
+              class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg"
+            >
+              Eliminar
+            </button>
+
+          </div>
+
+        </div>
+      `;
+    });
+  }
+
+  renderProductos();
+
+  // =========================
+  // GUARDAR PRODUCTO
+  // =========================
+
+  form.addEventListener('submit', (e) => {
+
+    e.preventDefault();
+
+    const nombre = document.getElementById('nombre').value;
+
+    const precio = document.getElementById('precio').value;
+
+    const descripcion = document.getElementById('descripcion').value;
+
+    const imagen = document.getElementById('imagen').value;
+
+    // VALIDACIONES
+
+    if (
+      nombre.trim() === '' ||
+      precio <= 0 ||
+      descripcion.trim() === '' ||
+      imagen.trim() === ''
+    ) {
+      alert('Todos los campos son obligatorios');
+      return;
+    }
+
+    // EDITAR
+
+    if (editando) {
+
+      productos = productos.map(producto => {
+
+        if (producto.id === productoEditandoId) {
+
+          return {
+            ...producto,
+            nombre,
+            precio,
+            descripcion,
+            imagen
+          };
+        }
+
+        return producto;
+      });
+
+      editando = false;
+
+      productoEditandoId = null;
+
+    } else {
+
+      // AGREGAR
+
+      const nuevoProducto = {
+
+        id: Date.now(),
+
+        nombre,
+
+        precio,
+
+        descripcion,
+
+        imagen
+      };
+
+      productos.push(nuevoProducto);
+    }
+
+    localStorage.setItem('productos', JSON.stringify(productos));
+
+    renderProductos();
+
+    form.reset();
+  });
+
+  // =========================
+  // ELIMINAR
+  // =========================
+
+  function eliminarProducto(id) {
+
+    productos = productos.filter(producto => producto.id !== id);
+
+    localStorage.setItem('productos', JSON.stringify(productos));
+
+    renderProductos();
+  }
+
+  // =========================
+  // EDITAR
+  // =========================
+
+  function editarProducto(id) {
+
+    const producto = productos.find(p => p.id === id);
+
+    document.getElementById('nombre').value = producto.nombre;
+
+    document.getElementById('precio').value = producto.precio;
+
+    document.getElementById('descripcion').value = producto.descripcion;
+
+    document.getElementById('imagen').value = producto.imagen;
+
+    editando = true;
+
+    productoEditandoId = id;
+  }
+
+  </script>
 </body>
 </html>
